@@ -51,4 +51,24 @@ class MatrixSpec extends Specification {
                 "9 2 12 18 9\n" +
                 "2 3 4 5 7"
     }
+
+    def "should multiply by factor = #factor"() {
+        given:
+        Matrix A = new Matrix([[1, 2, 3, 4, 5],
+                               [3, 2, 3, 2, 1],
+                               [8, 0, 9, 9, 1],
+                               [1, 3, 4, 5, 6]] as int[][])
+
+        when:
+        A.multiplyByNumber(factor)
+
+        then:
+        A.asString() == output
+
+        where:
+        factor || output
+        2      || "2 4 6 8 10\n6 4 6 4 2\n16 0 18 18 2\n2 6 8 10 12"
+        0      || "0 0 0 0 0\n0 0 0 0 0\n0 0 0 0 0\n0 0 0 0 0"
+    }
+
 }

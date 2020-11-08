@@ -34,7 +34,15 @@ class Matrix {
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                data[i][j] = data[i][j] + matrix.data[i][j];
+                data[i][j] += matrix.data[i][j];
+            }
+        }
+    }
+
+    void multiplyByNumber(int factor) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                data[i][j] *= factor;
             }
         }
     }

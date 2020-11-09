@@ -6,60 +6,24 @@ class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     public static void main(String[] args) {
-
+        CommandOperator commandOperator = new CommandOperator();
         while (true) {
             displayMenu();
             int option = prompt();
             switch (option) {
                 case 1:
-                    addMatrices();
+                    commandOperator.setCommand(new AddMatricesCommand(readMatrixFromInput(), readMatrixFromInput()));
                     break;
                 case 2:
-                    multiplyByConstant();
+                    commandOperator.setCommand(new MultiplyByConstantCommand(readMatrixFromInput(), SCANNER.nextInt()));
                     break;
                 case 3:
-                    multiplyByMatrix();
+                    commandOperator.setCommand(new MultiplyMatrixByMatrixCommand(readMatrixFromInput(), readMatrixFromInput()));
                     break;
                 default:
                     return;
             }
-        }
-    }
-
-    private static void multiplyByMatrix() {
-        Matrix A = readMatrixFromInput();
-        Matrix B = readMatrixFromInput();
-        try {
-            Matrix C = A.multiplyByMatrix(B);
-            System.out.println("The result is:");
-            System.out.println(C.asString());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The operation cannot be performed.");
-        }
-    }
-
-    private static void multiplyByConstant() {
-        Matrix A = readMatrixFromInput();
-        int factor = SCANNER.nextInt();
-
-        try {
-            System.out.println("The result is:");
-            A.multiplyByNumber(factor);
-            System.out.println(A.asString());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The operation cannot be performed.");
-        }
-    }
-
-    private static void addMatrices() {
-        Matrix A = readMatrixFromInput();
-        Matrix B = readMatrixFromInput();
-        try {
-            A.add(B);
-            System.out.println("The result is:");
-            System.out.println(A.asString());
-        } catch (IllegalArgumentException e) {
-            System.out.println("The operation cannot be performed.");
+            commandOperator.execute();
         }
     }
 
@@ -81,7 +45,7 @@ class Main {
         double[][] matrixOne = new double[m1][n1];
         for (int i = 0; i < m1; i++) {
             for (int j = 0; j < n1; j++) {
-                matrixOne[i][j] = SCANNER.nextInt();
+                matrixOne[i][j] = SCANNER.nextDouble();
             }
         }
         return new Matrix(matrixOne);

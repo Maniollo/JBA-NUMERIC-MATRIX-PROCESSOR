@@ -6,24 +6,46 @@ class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Matrix A = readMatrixFromInput();
-        int factor = SCANNER.nextInt();
-
-        try {
-            A.multiplyByNumber(factor);
-            System.out.println(A.asString());
-        } catch (IllegalArgumentException e) {
-            System.out.println("ERROR");
+        CommandOperator commandOperator = new CommandOperator();
+        while (true) {
+            displayMenu();
+            int option = prompt();
+            switch (option) {
+                case 1:
+                    commandOperator.setCommand(new AddMatricesCommand(readMatrixFromInput(), readMatrixFromInput()));
+                    break;
+                case 2:
+                    commandOperator.setCommand(new MultiplyByConstantCommand(readMatrixFromInput(), SCANNER.nextInt()));
+                    break;
+                case 3:
+                    commandOperator.setCommand(new MultiplyMatrixByMatrixCommand(readMatrixFromInput(), readMatrixFromInput()));
+                    break;
+                default:
+                    return;
+            }
+            commandOperator.execute();
         }
+    }
+
+    private static int prompt() {
+        System.out.println("Your choice: ");
+        return SCANNER.nextInt();
+    }
+
+    private static void displayMenu() {
+        System.out.println("1. Add matrices");
+        System.out.println("2. Multiply matrix by a constant");
+        System.out.println("3. Multiply matrices");
+        System.out.println("0. Exit");
     }
 
     private static Matrix readMatrixFromInput() {
         int m1 = SCANNER.nextInt();
         int n1 = SCANNER.nextInt();
-        int[][] matrixOne = new int[m1][n1];
+        double[][] matrixOne = new double[m1][n1];
         for (int i = 0; i < m1; i++) {
             for (int j = 0; j < n1; j++) {
-                matrixOne[i][j] = SCANNER.nextInt();
+                matrixOne[i][j] = SCANNER.nextDouble();
             }
         }
         return new Matrix(matrixOne);

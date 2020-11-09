@@ -1,11 +1,11 @@
 package masmar.home.jba.matrixprocessor;
 
 class Matrix {
-    private final int[][] data;
+    private final double[][] data;
     private final int m;
     private final int n;
 
-    Matrix(int[][] data) {
+    Matrix(double[][] data) {
         this.data = data;
         m = data.length;
         n = data[0].length;
@@ -45,5 +45,21 @@ class Matrix {
                 data[i][j] *= factor;
             }
         }
+    }
+
+    Matrix multiplyByMatrix(Matrix matrix) throws IllegalArgumentException{
+        if (this.n != matrix.m) {
+            throw new IllegalArgumentException();
+        }
+
+        double[][] result = new double[m][matrix.n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < matrix.n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] += data[i][k] * matrix.data[k][j];
+                }
+            }
+        }
+        return new Matrix(result);
     }
 }

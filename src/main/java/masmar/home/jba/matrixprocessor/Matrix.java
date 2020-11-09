@@ -62,4 +62,20 @@ class Matrix {
         }
         return new Matrix(result);
     }
+
+    Matrix transposeAlongMainDiagonal() {
+        return null;
+    }
+
+    Matrix transposeAlongHorizontalLine() {
+        return null;
+    }
+
+    Matrix transposeAlongVerticalLine() {
+        return null;
+    }
+
+    Matrix transposeAlongSideDiagonal() {
+        return null;
+    }
 }

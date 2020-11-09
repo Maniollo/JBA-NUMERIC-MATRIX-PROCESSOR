@@ -79,7 +79,7 @@ class MatrixSpec extends Specification {
         C.asString() == CasString
 
         where:
-        A                                                        | B                                                         || CasString
+        A                                                           | B                                                            || CasString
         new Matrix([[1, 7, 7], [6, 6, 4], [4, 2, 1]] as double[][]) | new Matrix([[3, 2, 4], [5, 5, 9], [8, 0, 10]] as double[][]) || "94.0 37.0 137.0\n80.0 42.0 118.0\n30.0 18.0 44.0"
         new Matrix([[2, 4, 6], [1, 3, 5]] as double[][])            | new Matrix([[1, 2], [3, 4], [5, 6]] as double[][])           || "44.0 56.0\n35.0 44.0"
     }
@@ -94,5 +94,37 @@ class MatrixSpec extends Specification {
 
         then:
         IllegalArgumentException ex = thrown()
+    }
+
+    def "should transpose matrix along the main diagonal"() {
+        given:
+        def matrix = new Matrix([[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3], [4, 4, 4, 4]] as double[][])
+
+        expect:
+        matrix.transposeAlongMainDiagonal().asString() == "1.0 2.0 3.0 4.0\n1.0 2.0 3.0 4.0\n1.0 2.0 3.0 4.0\n1.0 2.0 3.0 4.0"
+    }
+
+    def "should transpose matrix along the side diagonal"() {
+        given:
+        def matrix = new Matrix([[1, 1, 1, -1], [2, 2, 2, -2], [3, 3, 3, -3], [4, 4, 4, -4]] as double[][])
+
+        expect:
+        matrix.transposeAlongSideDiagonal().asString() == "-4.0 -3.0 -2.0 -1.0\n4.0 3.0 2.0 1.0\n4.0 3.0 2.0 1.0\n4.0 3.0 2.0 1.0"
+    }
+
+    def "should transpose matrix along the vertical line"() {
+        when:
+        def matrix = new Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]] as double[][])
+
+        then:
+        matrix.transposeAlongVerticalLine().asString() == "4.0 3.0 2.0 1.0\n8.0 7.0 6.0 5.0\n12.0 11.0 10.0 9.0\n16.0 15.0 14.0 13.0"
+    }
+
+    def "should transpose matrix along the horizontal line"() {
+        when:
+        def matrix = new Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]] as double[][])
+
+        then:
+        matrix.transposeAlongHorizontalLine().asString() == "13.0 14.0 15.0 16.0\n9.0 10.0 11.0 12.0\n5.0 6.0 7.0 8.0\n1.0 2.0 3.0 4.0"
     }
 }

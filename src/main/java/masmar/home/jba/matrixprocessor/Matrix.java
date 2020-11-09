@@ -47,7 +47,7 @@ class Matrix {
         }
     }
 
-    Matrix multiplyByMatrix(Matrix matrix) throws IllegalArgumentException{
+    Matrix multiplyByMatrix(Matrix matrix) throws IllegalArgumentException {
         if (this.n != matrix.m) {
             throw new IllegalArgumentException();
         }
@@ -61,5 +61,45 @@ class Matrix {
             }
         }
         return new Matrix(result);
+    }
+
+    Matrix transposeAlongMainDiagonal() {
+        double[][] transposed = new double[m][n];
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = 0; j < n; j++) {
+                transposed[i][j] = data[j][i];
+            }
+        }
+        return new Matrix(transposed);
+    }
+
+    Matrix transposeAlongHorizontalLine() {
+        double[][] transposed = new double[m][n];
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = 0; j < n; j++) {
+                transposed[-i + m - 1][j] = data[i][j];
+            }
+        }
+        return new Matrix(transposed);
+    }
+
+    Matrix transposeAlongVerticalLine() {
+        double[][] transposed = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = n - 1; j >= 0; j--) {
+                transposed[i][-j + n - 1] = data[i][j];
+            }
+        }
+        return new Matrix(transposed);
+    }
+
+    Matrix transposeAlongSideDiagonal() {
+        double[][] transposed = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                transposed[-j + m - 1][-i + n - 1] = data[i][j];
+            }
+        }
+        return new Matrix(transposed);
     }
 }

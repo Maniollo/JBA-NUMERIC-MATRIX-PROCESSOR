@@ -29,6 +29,7 @@ class Main {
                     break;
                 case 5:
                     commandOperator.setCommand(new CalculateDeterminantCommand(readMatrixFromInput()));
+                    break;
                 default:
                     return;
             }

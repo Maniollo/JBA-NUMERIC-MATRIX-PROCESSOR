@@ -103,10 +103,41 @@ class Matrix {
         return new Matrix(transposed);
     }
 
-    int calculateDeterminant() throws IllegalStateException{
+    double calculateDeterminant() throws IllegalStateException {
         if (m != n) {
             throw new IllegalStateException();
         }
-        return -1;
+        return calculateDeterminantRecursive(data);
+    }
+
+    private double calculateDeterminantRecursive(double[][] data) {
+        if (data.length == 2) {
+            return data[0][0] * data[1][1] - data[1][0] * data[0][1];
+        }
+
+        double sum = 0;
+
+        for (int i = 0; i < data.length; i++) {
+            double[][] subMatrix = createSubMatrix(data, i);
+            sum = sum + data[0][i] * Math.pow(-1.0, 2 + i) * calculateDeterminantRecursive(subMatrix);
+        }
+
+        return sum;
+    }
+
+    private double[][] createSubMatrix(double[][] data, int skipColumnIdx) {
+        int newSubMatrixLength = data.length - 1;
+        double[][] subMatrix = new double[newSubMatrixLength][newSubMatrixLength];
+        int y;
+        for (int i = 0; i < newSubMatrixLength; i++) {
+            y = 0;
+            for (int j = 0; j < newSubMatrixLength; j++) {
+                if (y == skipColumnIdx) {
+                    y += 1;
+                }
+                subMatrix[i][j] = data[i + 1][y++];
+            }
+        }
+        return subMatrix;
     }
 }

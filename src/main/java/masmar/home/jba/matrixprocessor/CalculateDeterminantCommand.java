@@ -10,7 +10,7 @@ class CalculateDeterminantCommand implements Command {
     @Override
     public void execute() {
         try {
-            int determinant = A.calculateDeterminant();
+            double determinant = A.calculateDeterminant();
             System.out.println("The result is:");
             System.out.println(determinant);
         } catch (IllegalStateException e) {

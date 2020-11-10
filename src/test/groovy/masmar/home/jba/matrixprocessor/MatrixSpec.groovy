@@ -26,7 +26,7 @@ class MatrixSpec extends Specification {
         A.add(B)
 
         then:
-        IllegalArgumentException ex = thrown()
+        thrown IllegalArgumentException
     }
 
     def "should add another matrix"() {
@@ -93,7 +93,7 @@ class MatrixSpec extends Specification {
         A.multiplyByMatrix(B)
 
         then:
-        IllegalArgumentException ex = thrown()
+        thrown IllegalArgumentException
     }
 
     def "should transpose matrix along the main diagonal"() {
@@ -126,5 +126,27 @@ class MatrixSpec extends Specification {
 
         then:
         matrix.transposeAlongHorizontalLine().asString() == "13.0 14.0 15.0 16.0\n9.0 10.0 11.0 12.0\n5.0 6.0 7.0 8.0\n1.0 2.0 3.0 4.0"
+    }
+
+    def "should throw IllegalStateException when calculate not square matrix determinant"() {
+        given:
+        def matrix = new Matrix([[1, 2]] as double[][])
+
+        when:
+        matrix.calculateDeterminant()
+
+        then:
+        thrown IllegalStateException
+    }
+
+    def "should return #determinant as matrix determinant"() {
+        expect:
+        new Matrix(matrix as double[][]).calculateDeterminant() == determinant as double
+
+        where:
+        matrix                                                   || determinant
+        [[1, -4], [-2, 5]]                                       || -3.0
+        [[2, 1, 3], [4, 0, -1], [-2, 5, 6]]                      || 48.0
+        [[1, 2, 3, 4], [1, 0, 2, 0], [0, 1, 2, 3], [2, 3, 0, 0]] || 7.0
     }
 }

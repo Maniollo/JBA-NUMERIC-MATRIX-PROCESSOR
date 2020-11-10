@@ -30,6 +30,9 @@ class Main {
                 case 5:
                     commandOperator.setCommand(new CalculateDeterminantCommand(readMatrixFromInput()));
                     break;
+                case 6:
+                    commandOperator.setCommand(new InverseMatrixCommand(readMatrixFromInput()));
+                    break;
                 default:
                     return;
             }
@@ -55,6 +58,7 @@ class Main {
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
         System.out.println("5. Calculate a determinant");
+        System.out.println("6. Inverse matrix");
         System.out.println("0. Exit");
     }
 

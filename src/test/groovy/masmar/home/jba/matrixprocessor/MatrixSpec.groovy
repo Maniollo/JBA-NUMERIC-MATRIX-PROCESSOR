@@ -149,4 +149,27 @@ class MatrixSpec extends Specification {
         [[2, 1, 3], [4, 0, -1], [-2, 5, 6]]                      || 48.0
         [[1, 2, 3, 4], [1, 0, 2, 0], [0, 1, 2, 3], [2, 3, 0, 0]] || 7.0
     }
+
+    def "should throw IllegalStateException when inverse not square matrix"() {
+        given:
+        def matrix = new Matrix([[1, 2]] as double[][])
+
+        when:
+        matrix.inverse()
+
+        then:
+        thrown IllegalStateException
+    }
+
+    def "should return inverted matrix"() {
+        when:
+        def A = new Matrix(matrix as double[][]).inverse()
+
+        then:
+        A.asString() == inverted
+
+        where:
+        matrix           || inverted
+        [[2, -1, 0], [0, 1, 2], [1, 1, 0]] || "0.3333333333333333 0.0 0.3333333333333333\n-0.3333333333333333 0.0 0.6666666666666666\n0.16666666666666666 0.5 -0.3333333333333333"
+    }
 }

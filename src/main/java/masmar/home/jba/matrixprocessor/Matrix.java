@@ -39,10 +39,11 @@ class Matrix {
         }
     }
 
-    void multiplyByNumber(int factor) {
+    void multiplyByNumber(double factor) {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                data[i][j] *= factor;
+                double newValue = data[i][j] * factor;
+                data[i][j] = newValue == 0 ? 0.0 : newValue;
             }
         }
     }
@@ -110,6 +111,17 @@ class Matrix {
         return calculateDeterminantRecursive(data);
     }
 
+    Matrix inverse() {
+        double determinant = this.calculateDeterminant();
+        if (determinant == 0) {
+            throw new IllegalStateException();
+        }
+        Matrix cofactorMatrix = getCofactorMatrix();
+        Matrix transposedCofators = cofactorMatrix.transposeAlongMainDiagonal();
+        transposedCofators.multiplyByNumber(1.0 / determinant);
+        return transposedCofators;
+    }
+
     private double calculateDeterminantRecursive(double[][] data) {
         if (data.length == 2) {
             return data[0][0] * data[1][1] - data[1][0] * data[0][1];
@@ -118,26 +130,42 @@ class Matrix {
         double sum = 0;
 
         for (int i = 0; i < data.length; i++) {
-            double[][] subMatrix = createSubMatrix(data, i);
+            double[][] subMatrix = createSubMatrix(data, 0, i);
             sum = sum + data[0][i] * Math.pow(-1.0, 2 + i) * calculateDeterminantRecursive(subMatrix);
         }
 
         return sum;
     }
 
-    private double[][] createSubMatrix(double[][] data, int skipColumnIdx) {
+    private double[][] createSubMatrix(double[][] data, int skipRowIdx, int skipColumnIdx) {
         int newSubMatrixLength = data.length - 1;
         double[][] subMatrix = new double[newSubMatrixLength][newSubMatrixLength];
         int y;
+        int x = 0;
         for (int i = 0; i < newSubMatrixLength; i++) {
             y = 0;
+            if (x == skipRowIdx) {
+                x += 1;
+            }
             for (int j = 0; j < newSubMatrixLength; j++) {
                 if (y == skipColumnIdx) {
                     y += 1;
                 }
-                subMatrix[i][j] = data[i + 1][y++];
+                subMatrix[i][j] = data[x][y++];
             }
+            x += 1;
         }
         return subMatrix;
+    }
+
+    private Matrix getCofactorMatrix() {
+        double[][] cofactors = new double[m][m];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                double determinant = new Matrix(createSubMatrix(data, i, j)).calculateDeterminant();
+                cofactors[i][j] = determinant == 0 ? 0.0 : Math.pow(-1.0, 2 + i + j) * determinant;
+            }
+        }
+        return new Matrix(cofactors);
     }
 }

@@ -102,4 +102,11 @@ class Matrix {
         }
         return new Matrix(transposed);
     }
+
+    int calculateDeterminant() throws IllegalStateException{
+        if (m != n) {
+            throw new IllegalStateException();
+        }
+        return -1;
+    }
 }

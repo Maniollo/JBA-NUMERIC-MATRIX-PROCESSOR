@@ -27,6 +27,9 @@ class Main {
                     option = prompt();
                     commandOperator.setCommand(transposeCommandFactory.create(option, readMatrixFromInput()));
                     break;
+                case 5:
+                    commandOperator.setCommand(new CalculateDeterminantCommand(readMatrixFromInput()));
+                    break;
                 default:
                     return;
             }
@@ -51,6 +54,7 @@ class Main {
         System.out.println("2. Multiply matrix by a constant");
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
+        System.out.println("5. Calculate a determinant");
         System.out.println("0. Exit");
     }
 
